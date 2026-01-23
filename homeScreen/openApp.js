@@ -162,7 +162,7 @@ function draggableWindow(windowEl, handleEl){
     let offsetY = 0;
     let shield = null;
 
-    handleEl.addEventListener("mousedown", (e) => {
+    function detectTitleBarPress(e){
         // Ignore clicks on title bar buttons
         if(e.target.closest(".titleBarBtn")) return;
 
@@ -170,8 +170,14 @@ function draggableWindow(windowEl, handleEl){
 
         // Calculate mouse offset inside window
         const rect = windowEl.getBoundingClientRect();
-        offsetX = e.clientX - rect.left;
-        offsetY = e.clientY - rect.top;
+        if(e.touches && e.touches[0]){
+            offsetX = e.touches[0].clientX - rect.left;
+            offsetY = e.touches[0].clientY - rect.top;
+        }
+        else{
+            offsetX = e.clientX - rect.left;
+            offsetY = e.clientY - rect.top;
+        }
 
         // Shield prevents iframe stealing mouse events
         shield = document.createElement("div");
@@ -179,9 +185,17 @@ function draggableWindow(windowEl, handleEl){
         document.body.appendChild(shield);
 
         document.body.style.userSelect = "none";
-    });
+    }
 
-    document.addEventListener("mousemove", (e) => {
+    handleEl.addEventListener("mousedown", (e) => {
+        detectTitleBarPress(e);
+    });
+    handleEl.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        detectTitleBarPress(e);
+    }, { passive: false });
+
+    function detectDrag(e){
         if(!isDragging) return;
 
         if(windowEl.isMaximized){
@@ -193,19 +207,34 @@ function draggableWindow(windowEl, handleEl){
             offsetY = 0;
         }
 
-        let top = e.clientY - offsetY;
+        let top;
+        let left;
+        if(e.touches && e.touches[0]){
+            top = e.touches[0].clientY - offsetY;
+            left = `${e.touches[0].clientX - offsetX}px`
+        }
+        else{
+            top = e.clientY - offsetY;
+            left = `${e.clientX - offsetX}px`
+        }
         top = Math.max(top, 0) + "px";
-
-        const left = `${e.clientX - offsetX}px`
 
         windowEl.style.top = top;
         windowEl.style.left = left;
 
         windowEl.top = top;
         windowEl.left = left;
-    });
+    }
 
-    document.addEventListener("mouseup", () => {
+    document.addEventListener("mousemove", (e) => {
+        detectDrag(e);
+    });
+    document.addEventListener("touchmove", (e) => {
+        if(isDragging) e.preventDefault();
+        detectDrag(e);
+    }, { passive: false });
+
+    function detectTitleBarRelease(e){
         if(!isDragging) return;
 
         isDragging = false;
@@ -213,7 +242,14 @@ function draggableWindow(windowEl, handleEl){
         shield = null;
 
         document.body.style.userSelect = "";
+    }
+
+    document.addEventListener("mouseup", (e) => {
+        detectTitleBarRelease(e);
     });
+    document.addEventListener("touchend", (e) => {
+        detectTitleBarRelease(e);
+    }, { passive: false });
 }
 
 // Handles resizing the window using the resize handle
@@ -223,7 +259,7 @@ function resizeableWindow(windowEl, handleEl){
     let startWidth, startHeight;
     let shield;
 
-    handleEl.addEventListener("mousedown", (e) => {
+    function detectResizeElPress(e){
         e.preventDefault();
         e.stopPropagation();
 
@@ -231,8 +267,14 @@ function resizeableWindow(windowEl, handleEl){
 
         // Save starting mouse and window size
         const rect = windowEl.getBoundingClientRect();
-        startX = e.clientX;
-        startY = e.clientY;
+        if(e.touches && e.touches[0]){
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+        }
+        else{
+            startX = e.clientX;
+            startY = e.clientY;
+        }
         startWidth = rect.width;
         startHeight = rect.height;
 
@@ -242,15 +284,30 @@ function resizeableWindow(windowEl, handleEl){
         document.body.appendChild(shield);
 
         document.body.style.userSelect = "none";
+    }
+
+    handleEl.addEventListener("mousedown", (e) => {
+        detectResizeElPress(e);
+    });
+    handleEl.addEventListener("touchstart", (e) => {
+        detectResizeElPress(e);
     });
 
-    document.addEventListener("mousemove", (e) => {
+    function detectResizing(e){
         if(!isResizing) return;
 
-        let width = startWidth + (e.clientX - startX);
+        let clientX = e.clientX;
+        let clientY = e.clientY;
+        
+        if(e.touches && e.touches[0]){
+            clientX = e.touches[0].clientX;
+            clientY = e.touches[0].clientY;
+        }
+
+        let width = startWidth + (clientX - startX);
         width = Math.max(width, 200) + "px"
 
-        let height = startHeight + (e.clientY - startY);
+        let height = startHeight + (clientY - startY);
         height = Math.max(height, 175) + "px";
 
         // Enforce minimum size
@@ -259,10 +316,16 @@ function resizeableWindow(windowEl, handleEl){
 
         windowEl.height = height;
         windowEl.width = width;
+    }
 
+    document.addEventListener("mousemove", (e) => {
+        detectResizing(e);
+    });
+    document.addEventListener("touchmove", (e) => {
+        detectResizing(e);
     });
 
-    document.addEventListener("mouseup", () => {
+    function detectResizeElRelease(){
         if(!isResizing) return;
 
         isResizing = false;
@@ -270,5 +333,12 @@ function resizeableWindow(windowEl, handleEl){
         shield = null;
 
         document.body.style.userSelect = "";
+    }
+
+    document.addEventListener("mouseup", () => {
+        detectResizeElRelease();
+    });
+    document.addEventListener("touchend", () => {
+        detectResizeElRelease();
     });
 }

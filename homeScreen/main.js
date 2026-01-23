@@ -6,7 +6,6 @@ import { apps } from "../apps/apps.js";
 
 console.log("Logged in");
 
-const desktop = document.getElementById("desktop");
 const startBtn = document.getElementById("startBtn");
 const clock = document.getElementById("clock");
 const date = document.getElementById("date");
@@ -17,8 +16,7 @@ loadSettings();
 initTaskbar({
     clock: clock,
     date: date,
-    taskbar: appList,
-    desktop: desktop
+    taskbar: appList
 }, apps);
 initStartMenu(startBtn);
 

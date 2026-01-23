@@ -166,6 +166,9 @@ function draggableWindow(windowEl, handleEl){
         // Ignore clicks on title bar buttons
         if(e.target.closest(".titleBarBtn")) return;
 
+        // Only prevent default for drag actions, not button clicks
+        if(e.touches) e.preventDefault();
+
         isDragging = true;
 
         // Calculate mouse offset inside window
@@ -191,7 +194,6 @@ function draggableWindow(windowEl, handleEl){
         detectTitleBarPress(e);
     });
     handleEl.addEventListener("touchstart", (e) => {
-        e.preventDefault();
         detectTitleBarPress(e);
     }, { passive: false });
 
@@ -291,7 +293,7 @@ function resizeableWindow(windowEl, handleEl){
     });
     handleEl.addEventListener("touchstart", (e) => {
         detectResizeElPress(e);
-    });
+    }, { passive: false });
 
     function detectResizing(e){
         if(!isResizing) return;
@@ -322,8 +324,9 @@ function resizeableWindow(windowEl, handleEl){
         detectResizing(e);
     });
     document.addEventListener("touchmove", (e) => {
+        if(isDragging) e.preventDefault();
         detectResizing(e);
-    });
+    }, { passive: false });
 
     function detectResizeElRelease(){
         if(!isResizing) return;

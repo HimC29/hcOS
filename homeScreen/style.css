@@ -147,6 +147,7 @@ html, body {
     color: var(--text-color);
     border: none;
     cursor: pointer;
+    touch-action: auto;
 }
 .iframe {
     flex: 1;

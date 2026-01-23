@@ -1,0 +1,345 @@
+/* ---------------- VARIABLES ---------------- */
+:root {
+    /* Colors */
+    --bg-color: #121212;
+    --text-color: #ffffff;
+    --primary-color: #38d9e8;
+    --menu-bg: #333;
+    --taskbar-bg: #333;
+    --task-bg: #555;
+    --overlay-bg: hsla(0, 0%, 50%, 0.2);
+    --start-btn-bg: #4a4a4a;
+    --start-btn-text: var(--primary-color);
+    --taskbar-item-hover: #575757;
+    --taskbar-item-inactive: #4a4a4a;
+    --icon-bg: #4a4a4a;
+    --icon-color: var(--primary-color);
+    --window-shadow: rgba(0, 0, 0, 0.5);
+    --iframe-bg: #222;
+    --titlebar-bg: var(--menu-bg);
+
+    /* Fonts */
+    --font-main: "Poppins-Medium", sans-serif;
+    --font-bold-italic: "Poppins-BoldItalic", sans-serif;
+
+    /* Sizes */
+    --border-radius-small: 0.2rem;
+    --border-radius-medium: 1rem;
+    --window-border-radius: 10px;
+    --taskbar-height: 3.5rem;
+    --start-btn-size: 2.75rem;
+    --start-menu-size: 30rem;
+    --start-menu-bottom: 4.25rem;
+    --titlebar-height: 2rem;
+    --titlebar-btn-size: 2rem;
+    --icon-size: 8rem;
+    --task-icon-size: var(--start-btn-size);
+
+    /* Z-Index */
+    --overlay-z: 999;
+
+    /* Shadows & transitions */
+    --transition-speed: 0.3s;
+}
+
+/* Light theme */
+[data-theme="light"] {
+    --bg-color: #f6f6f6;
+    --text-color: #000000;
+    --primary-color: #38d9e8;
+    --menu-bg: #eee;
+    --taskbar-bg: #dddddd;
+    --task-bg: #ddd;
+    --overlay-bg: hsla(0, 0%, 0%, 0.2);
+    --start-btn-text: var(--primary-color);
+    --icon-bg: #bbb;
+    --icon-color: var(--primary-color);
+    --window-shadow: rgba(0, 0, 0, 0.2);
+    --iframe-bg: #f5f5f5;
+    --titlebar-bg: var(--menu-bg);
+}
+
+/* ---------------- FONTS ---------------- */
+@font-face {
+    font-family: "Poppins-Medium";
+    src: url("../fonts/Poppins-Medium.ttf");
+}
+@font-face {
+    font-family: "Poppins-BoldItalic";
+    src: url("../fonts/Poppins-BoldItalic.ttf");
+}
+
+/* ---------------- GLOBAL ---------------- */
+html, body {
+    overflow: hidden;
+    height: 100%;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-main);
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+
+* {
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+/* ---------------- DESKTOP ---------------- */
+#desktop {
+    position: fixed;
+    inset: 0;
+    bottom: var(--taskbar-height);
+    overflow: hidden;
+    z-index: 400;
+}
+
+/* Dragging area */
+.dragShield, .resizeShield {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+}
+.dragShield {
+    cursor: grab;
+}
+.resizeShield {
+    cursor: se-resize;
+}
+
+/* ---------------- APP WINDOWS ---------------- */
+.appWindow {
+    display: flex;
+    flex-direction: column;
+    width: 25rem;
+    height: 30rem;
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    box-shadow: 0 0 var(--window-border-radius) var(--window-shadow);
+    border-radius: var(--window-border-radius);
+    z-index: 998;
+    background-color: transparent;
+}
+.titleBar {
+    background-color: var(--titlebar-bg);
+    height: var(--titlebar-height);
+    border-radius: var(--window-border-radius) var(--window-border-radius) 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+#title {
+    margin: 0 0.5rem;
+}
+.titleBarBtnContainer button {
+    width: var(--titlebar-btn-size);
+    height: var(--titlebar-btn-size);
+    font-size: 1.25rem;
+    background-color: transparent;
+    border-radius: var(--window-border-radius);
+    color: var(--text-color);
+    border: none;
+    cursor: pointer;
+}
+.iframe {
+    flex: 1;
+    width: 100%;
+    border: none;
+    border-radius: 0 0 var(--window-border-radius) var(--window-border-radius);
+    background-color: var(--iframe-bg);
+    transition: background-color var(--transition-speed);
+}
+.visibleWindowTaskbar {
+    background-color: var(--taskbar-item-hover);
+}
+.invisibleWindowTaskbar {
+    background-color: var(--taskbar-item-inactive);
+}
+.closedWindowTaskbar {
+    background-color: transparent;
+}
+.resizeHandle {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 8px;
+    height: 8px;
+    cursor: se-resize;
+    background: transparent;
+}
+
+/* ---------------- START MENU ---------------- */
+#startMenu {
+    background-color: var(--menu-bg);
+    width: var(--start-menu-size);
+    height: var(--start-menu-size);
+    position: fixed;
+    bottom: var(--start-menu-bottom);
+    left: 0.75rem;
+    right: 0;
+    border-radius: var(--border-radius-medium);
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    z-index: var(--overlay-z);
+    transition: opacity 0.1s ease-in-out, background-color var(--transition-speed);
+}
+#startMenuBtnContainers {
+    margin-top: auto;
+    margin-bottom: 0.5rem;
+    margin-left: 0.5rem;
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.2rem;
+}
+#startMenuBtnContainers button {
+    border-radius: 2rem;
+    border: none;
+    background-color: var(--primary-color);
+    font-size: 1.25rem;
+    font-family: var(--font-main);
+    cursor: pointer;
+    padding: 0.25rem 0.75rem;
+    transition: background-color var(--transition-speed);
+}
+
+/* ---------------- OVERLAY ---------------- */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--overlay-bg);
+    z-index: var(--overlay-z);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out, background-color var(--transition-speed);
+}
+.overlay button {
+    border-radius: 2rem;
+    border: none;
+    background-color: var(--primary-color);
+    font-size: 1.5rem;
+    font-family: var(--font-main);
+    cursor: pointer;
+    padding: 0.25rem 0.75rem;
+    margin: 0 0.25rem;
+    margin-bottom: 20vh;
+    transition: background-color var(--transition-speed);
+}
+#sleepBg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    z-index: var(--overlay-z);
+    cursor: none;
+}
+.shutdownText {
+    text-align: center;
+    font-size: 2rem;
+}
+
+/* ---------------- TASKBAR ---------------- */
+#taskbar {
+    background-color: var(--taskbar-bg);
+    color: var(--text-color);
+    height: var(--taskbar-height);
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 500;
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+#startBtn {
+    border: none;
+    cursor: pointer;
+    margin-right: 0.5rem;
+    margin-left: 0;
+    border-radius: 25%;
+    font-size: 1.3em;
+    height: var(--start-btn-size);
+    width: var(--start-btn-size);
+    background-color: var(--start-btn-bg);
+    color: var(--start-btn-text);
+    font-weight: bold;
+    font-family: var(--font-main);
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+#appList {
+    height: 80%;
+    width: fit-content;
+    display: flex;
+    gap: 0.2rem;
+}
+.apps {
+    height: var(--task-icon-size);
+    width: var(--task-icon-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    border-radius: 25%;
+    transition: background-color var(--transition-speed);
+}
+#dateAndTime {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    align-items: center;
+}
+#dateAndTime p {
+    margin: -0.2rem
+}
+#clock {
+    font-size: 1.25rem;
+}
+.taskItem {
+    background-color: var(--task-bg);
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color var(--transition-speed);
+}
+#systemTray {
+    margin-left: auto;
+}
+
+/* ---------------- ICON ---------------- */
+#hcOSicon {
+    border: none;
+    margin: auto;
+    margin-top: 20rem;
+    margin-bottom: 1rem;
+    border-radius: 50%;
+    font-size: 4em;
+    height: var(--icon-size);
+    width: var(--icon-size);
+    background-color: var(--icon-bg);
+    color: var(--icon-color);
+    font-weight: bold;
+    font-family: var(--font-main);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+
+/* ---------------- FONTS ---------------- */
+.Poppins-BoldItalic {
+    font-family: var(--font-bold-italic);
+}

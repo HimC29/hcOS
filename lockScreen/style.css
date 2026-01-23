@@ -1,0 +1,43 @@
+/* Fonts: */
+@font-face {
+    font-family: "Poppins-Medium";
+    src: url(../fonts/Poppins-Medium.ttf);
+}
+@font-face {
+    font-family: "Poppins-BoldItalic";
+    src: url(../fonts/Poppins-BoldItalic.ttf);
+}
+
+html, body{
+    background-color: #121212;
+    color: white;
+    font-family: Poppins-Medium;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+* {
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+#clock{
+    font-size: clamp(1.5em, 10vw, 5em);
+}
+h1{
+    font-size: clamp(1em, 7vw, 3em);
+}
+h2{
+    font-size: clamp(0.3em, 5vw, 2em);
+}
+#login{
+    font-size: clamp(0.5em, 4vw, 1.5em);
+    padding: 0.5rem 1.5rem;
+}
+
+.Poppins-BoldItalic{
+    font-family: Poppins-BoldItalic;
+}
+

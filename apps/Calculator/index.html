@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/e6e842ce07.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <div id="calculator">
+        <input id="display" readonly> 
+        <div id="keys">
+            <button onclick="appendToken('Math.sqrt')" class="operator-btn">√</button>
+            <button onclick="appendToken('**2')" class="operator-btn">x²</button>
+            <button onclick="clearDisplay()" class="operator-btn">C</button>
+            <button onclick="delLastDigit()" class="operator-btn">
+                <i class="fa-solid fa-delete-left"></i>
+            </button>
+
+            <button onclick="appendToken('+')" class="operator-btn">+</button>
+            <button onclick="appendToken('7')">7</button>
+            <button onclick="appendToken('8')">8</button>
+            <button onclick="appendToken('9')">9</button>
+
+            <button onclick="appendToken('-')" class="operator-btn">-</button>
+            <button onclick="appendToken('4')">4</button>
+            <button onclick="appendToken('5')">5</button>
+            <button onclick="appendToken('6')">6</button>
+
+            <button onclick="appendToken('*')" class="operator-btn">×</button>
+            <button onclick="appendToken('1')">1</button>
+            <button onclick="appendToken('2')">2</button>
+            <button onclick="appendToken('3')">3</button>
+
+            <button onclick="appendToken('/')" class="operator-btn">÷</button>
+            <button onclick="appendToken('.')">.</button>
+            <button onclick="appendToken('0')">0</button>
+            <button onclick="calculate()" class="operator-btn">=</button>
+            
+        </div>
+    </div>
+    
+    <script src="index.js"></script>
+</body>
+</html>

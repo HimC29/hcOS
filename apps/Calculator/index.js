@@ -1,5 +1,6 @@
 const display = document.getElementById("display");
 let userInputs = [];
+let calculated = false;
 display.value = "Calculator"
 
 function formatInputForScreen(userInputs){
@@ -33,6 +34,14 @@ function displayToScreen(){
 }
 
 function appendToken(input){
+    // If we just calculated and the new input is a number, clear and start fresh
+    if(calculated && !isNaN(input)){
+        clearDisplay();
+    }
+    // If an operator is pressed after a calculation, don't clear, just reset the flag
+    if(calculated && isNaN(input)){
+        calculated = false;
+    }
     userInputs.push(input);
     displayToScreen();
     console.log(userInputs);
@@ -51,6 +60,7 @@ function delLastDigit(){
 }
 
 function calculate(){
+    calculated = true;
     let formattedEquation = "";
     let sqrtActive = false;
     for(const input of userInputs){

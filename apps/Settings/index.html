@@ -2,28 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Settings</title>
     <link rel="stylesheet" href="style.css">
+    <script>
+        const theme = localStorage.getItem("theme");
+        if (theme === "dark" || theme === "light") {
+            document.documentElement.setAttribute("data-theme", theme);
+        }
+    </script>
 </head>
 <body>
-
     <header>Settings</header>
 
-    <h1 class="titles" id="aboutTitle">About</h1>
-    <h2 class="subtitles">Current OS</h2>
-    <div id="iconHolder">
-        <div id="hcOSicon">hc!</div>
-        <p id="osName" class="currentOsText">hc!OS Beta1</p>
-    </div>
+    <main>
+        <section class="settings-section">
+            <h1 class="titles" id="aboutTitle">About</h1>
+            <h2 class="subtitles">Current OS</h2>
+            <div id="iconHolder">
+                <img id="hcOSicon" src="../../media/hc!osIcon.png">
+                <p id="osName" class="currentOsText">hc!OS Beta1</p>
+            </div>
+        </section>
 
-    <h1 class="titles" id="themesTitle">Themes</h1>
-    <h2 class="subtitles">Light/Dark mode</h2>
-    <button id="lightMode">Light</button>
-    <button id="darkMode">Dark</button>
+        <section class="settings-section">
+            <h1 class="titles" id="themesTitle">Themes</h1>
+            <h2 class="subtitles">Light/Dark mode</h2>
+            <div class="button-group">
+                <button id="lightMode">☀️ Light</button>
+                <button id="darkMode">🌙 Dark</button>
+            </div>
+        </section>
+    </main>
 
-    
-    
     <script type="module" src="script.js"></script>
 </body>
 </html>

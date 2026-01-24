@@ -8,13 +8,13 @@ export function initStartMenu(buttonEl){
 
 function closeStartMenu(){
     const menu = document.getElementById("startMenu");
-        menu.style.opacity = "0";
+    menu.style.opacity = "0";
 
-        setTimeout(() => {
-            menu.remove();
-            startMenuOpen = false;
-            console.log("Close start menu");
-        }, 100); // must match CSS transition time
+    setTimeout(() => {
+        menu.remove();
+        startMenuOpen = false;
+        console.log("Close start menu");
+    }, 100); // must match CSS transition time
 }
 
 function startMenu(){
@@ -40,7 +40,10 @@ function startMenu(){
 
     function handleOutsideClick(e){
         if(startMenu && e.target != startBtn && !startMenu.contains(e.target)){
-            closeStartMenu();
+            try{
+                closeStartMenu();
+            }
+            catch(err){}
         }
     }
 
@@ -59,19 +62,26 @@ function createPowerOptions(startMenu){
     shutdownBtn.textContent = "Shut Down";
     btnContainers.appendChild(shutdownBtn);
 
-    function shutdownSequence(){
+    function createClosingElements(messageText){
         document.body.innerHTML = "";
 
-        const icon = document.createElement("div");
+        const iconAndMessageHolder = document.createElement("div");
+        iconAndMessageHolder.id = "iconAndMessageHolder";
+        document.body.appendChild(iconAndMessageHolder);
+
+        const icon = document.createElement("img");
         icon.id = "hcOSicon";
-        icon.textContent = "hc!";
-        document.body.appendChild(icon);
+        icon.src = "../media/hc!osIcon.png"
+        iconAndMessageHolder.appendChild(icon);
 
         const message = document.createElement("p");
-        message.textContent = "Shutting down";
-        message.className = "shutdownText";
-        document.body.appendChild(message);
+        message.textContent = messageText;
+        message.className = "closingText";
+        iconAndMessageHolder.appendChild(message);
+    }
 
+    function shutdownSequence(){
+        createClosingElements("Shutting down");
         setTimeout(() => {
             const sleepBg = document.createElement("div");
             sleepBg.id = "sleepBg";
@@ -95,17 +105,7 @@ function createPowerOptions(startMenu){
     btnContainers.appendChild(restartBtn);
 
     function restartSequence() {
-        document.body.innerHTML = "";
-
-        const icon = document.createElement("div");
-        icon.id = "hcOSicon";
-        icon.textContent = "hc!";
-        document.body.appendChild(icon);
-
-        const message = document.createElement("p");
-        message.textContent = "Restarting...";
-        message.className = "shutdownText";
-        document.body.appendChild(message);
+        createClosingElements("Shutting down");
 
         setTimeout(() => {
             window.location.reload();

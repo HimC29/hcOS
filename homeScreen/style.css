@@ -85,6 +85,12 @@ html, body {
     position: fixed;
     top: 0;
     left: 0;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
 
 * {
@@ -96,6 +102,13 @@ html, body {
 .titleBar {
     touch-action: none;
 }
+
+img {
+    -webkit-user-drag: none;
+    user-drag: none;
+    -webkit-touch-callout: none; /* Prevents callout on iOS */
+}
+
 
 /* Dragging area */
 .dragShield, .resizeShield {
@@ -249,7 +262,7 @@ html, body {
     z-index: var(--overlay-z);
     cursor: none;
 }
-.shutdownText {
+.closingText {
     text-align: center;
     font-size: 2rem;
 }
@@ -325,21 +338,16 @@ html, body {
 /* ---------------- ICON ---------------- */
 #hcOSicon {
     border: none;
+    width: 10rem;
+    height: 10rem;
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+#iconAndMessageHolder {
     margin: auto;
-    margin-top: 20rem;
-    margin-bottom: 1rem;
-    border-radius: 50%;
-    font-size: 4em;
-    height: var(--icon-size);
-    width: var(--icon-size);
-    background-color: var(--icon-bg);
-    color: var(--icon-color);
-    font-weight: bold;
-    font-family: var(--font-main);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background-color var(--transition-speed), color var(--transition-speed);
+    flex-direction: column;
 }
 
 /* ---------------- FONTS ---------------- */

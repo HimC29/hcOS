@@ -12,6 +12,10 @@ darkMode.addEventListener("click", () => {
     setSettings("dark");
 });
 
+function setTheme(theme){
+    document.documentElement.setAttribute("data-theme", theme);
+}
+
 function reqLoad(){
     window.parent.postMessage("load", "*");
 }

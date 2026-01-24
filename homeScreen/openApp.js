@@ -111,7 +111,9 @@ export function openApp(app){
     // App iframe content
     const iframe = document.createElement("iframe");
     iframe.classList.add("iframe");
+    iframe.title = app.name;
     iframe.src = app.file;
+    iframe.loading = "lazy";
     appWindow.appendChild(iframe);
 
     iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";

@@ -37,6 +37,7 @@ function appendToken(input){
     // If we just calculated and the new input is a number, clear and start fresh
     if(calculated && !isNaN(input)){
         clearDisplay();
+        calculated = false;
     }
     // If an operator is pressed after a calculation, don't clear, just reset the flag
     if(calculated && isNaN(input)){

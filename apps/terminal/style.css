@@ -1,0 +1,91 @@
+/* ---------------- Reset ---------------- */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: default;
+}
+
+/* ---------------- Body / Scrollbar ---------------- */
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 16px;
+    min-height: 100vh;
+    padding: 10px;
+    overflow-y: scroll; /* always show scrollbar area but hidden */
+}
+
+body, .terminal {
+    overflow: hidden; /* hides scrollbars completely */
+}
+
+.terminal {
+    overflow-y: auto; /* allow scrolling via mouse/keyboard, but hide scrollbar */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
+}
+
+.terminal::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+
+/* ---------------- Terminal Container ---------------- */
+.terminal {
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* ---------------- Lines ---------------- */
+.line {
+    display: flex;
+    align-items: baseline;
+}
+
+/* ---------------- Input line ---------------- */
+.line {
+    display: flex;
+    align-items: flex-start;
+    line-height: 1.5em;
+}
+
+.prompt {
+    margin-right: 5px;
+}
+
+.terminal-input {
+    background: none;
+    border: none;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    outline: none;
+
+    width: 100%;
+    resize: none;
+    overflow: hidden;
+
+    padding: 0;
+    margin: 0;
+
+    line-height: 1.5;
+    height: 1.5em;
+    box-sizing: content-box;
+
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+}
+
+@keyframes blink {
+    0%, 50%, 100% { background-color: currentColor; }
+    25%, 75% { background-color: transparent; }
+}
+
+#reply {
+    white-space: pre-wrap;
+    word-break: break-word;
+}

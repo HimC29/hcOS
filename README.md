@@ -57,3 +57,11 @@ Want to make hc!OS better? Contributions are welcome!
 ## License
 
 MIT License – feel free to use and modify hc!OS.
+
+---
+
+## Credits / Third-Party Assets
+
+- Icons from **KDE Breeze icon theme**  
+  Licensed under **CC-BY-SA / CC0**  
+  GitHub: [https://github.com/KDE/breeze-icons](https://github.com/KDE/breeze-icons)

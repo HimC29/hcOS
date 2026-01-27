@@ -50,11 +50,25 @@ export function openApp(app){
     titleBar.classList.add("titleBar");
     appWindow.appendChild(titleBar);
 
+    // Container for icon + title
+    const titleContainer = document.createElement("div");
+    titleContainer.classList.add("titleContainer");
+    titleBar.appendChild(titleContainer);
+
+    // App icon
+    if(app.icon){
+        const iconImg = document.createElement("img");
+        iconImg.src = app.icon;
+        iconImg.alt = `${app.name} icon`;
+        iconImg.classList.add("titleIcon");
+        titleContainer.appendChild(iconImg);
+    }
+
     // App title text
     const title = document.createElement("p");
-    title.id = "title";
     title.textContent = app.name;
-    titleBar.appendChild(title);
+    title.classList.add("titleText");
+    titleContainer.appendChild(title);
 
     // Container for title bar buttons
     const titleBarBtnContainer = document.createElement("div");

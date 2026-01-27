@@ -1,3 +1,4 @@
+import { getUser } from "../settings.js";
 let startBtn;
 export let startMenuOpen = false;
 
@@ -55,6 +56,17 @@ function createPowerOptions(startMenu){
     const btnContainers = document.createElement("div");
     btnContainers.id = "startMenuBtnContainers";
     startMenu.appendChild(btnContainers);
+
+    const userDisplay = document.createElement("p");
+    userDisplay.id = "userDisplay";
+    const user = getUser();
+    if(user){
+        userDisplay.textContent = `User: ${user}`;
+    }
+    else{
+        userDisplay.textContent = "guest";
+    }
+    startMenu.appendChild(userDisplay);
 
     // Shutdown btn
     const shutdownBtn = document.createElement("button");

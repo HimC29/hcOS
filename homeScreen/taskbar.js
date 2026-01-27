@@ -20,15 +20,26 @@ function updateDateTime(){
 }
 
 function displayApps(appList, apps){
-    apps.forEach((e) => {
+    function createImgOrEmoji(state, e){
         const newApp = document.createElement("div");
         newApp.classList.add("apps");
         newApp.id = e.id;
-        newApp.textContent = e.icon;
+
         appList.appendChild(newApp);
+
+        if(state === "img"){
+            const img = document.createElement("img");
+            img.src = e.icon;
+            newApp.appendChild(img);
+        }
+        else newApp.textContent = e.icon;
 
         newApp.addEventListener("click", () => {
             openApp(e);
         });
+    }
+    apps.forEach((e) => {
+        if(e.icon.startsWith("./") || e.icon.startsWith("../")) createImgOrEmoji("img", e)
+        else createImgOrEmoji("emoji", e)
     });
 }

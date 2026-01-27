@@ -109,7 +109,6 @@ img {
     -webkit-touch-callout: none; /* Prevents callout on iOS */
 }
 
-
 /* Dragging area */
 .dragShield, .resizeShield {
     position: fixed;
@@ -150,6 +149,24 @@ img {
 }
 #title {
     margin: 0 0.5rem;
+}
+.titleContainer {
+    margin: 0.25rem; 
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; 
+}
+.titleIcon {
+
+    width: 1.5rem;
+    height: 1.5rem;
+    object-fit: contain;
+    border-radius: 3px;
+}
+
+.titleText {
+    margin: 0;
+    font-weight: bold;
 }
 .titleBarBtnContainer button {
     width: var(--titlebar-btn-size);
@@ -204,6 +221,13 @@ img {
     opacity: 0;
     z-index: var(--overlay-z);
     transition: opacity 0.1s ease-in-out, background-color var(--transition-speed);
+}
+#userDisplay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0.75rem;
+    font-size: 1.25rem;
 }
 #startMenuBtnContainers {
     margin-top: auto;
@@ -312,6 +336,11 @@ img {
     font-size: 1.5rem;
     border-radius: 25%;
     transition: background-color var(--transition-speed);
+}
+.apps img{
+    width: 2rem;
+    height: 2rem;
+    object-fit: contain;
 }
 #dateAndTime {
     display: flex;

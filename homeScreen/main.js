@@ -1,6 +1,6 @@
 import { initTaskbar } from "./taskbar.js";
 import { initStartMenu } from "./startMenu.js";
-import { loadSettings } from "../setSettings.js";
+import { loadSettings } from "../settings.js";
 
 import { apps } from "../apps/apps.js";
 

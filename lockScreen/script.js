@@ -1,10 +1,12 @@
 import { getTime, getDate } from "../datetime.js";
+import { getUser } from "../settings.js";
 
 const clock = document.getElementById("clock");
 const date = document.getElementById("date");
+const userEl = document.getElementById("user");
 const loginBtn = document.getElementById("login");
 
-console.log("Started");
+userEl.textContent = getUser();
 
 setInterval(() => {
     clock.textContent = getTime();

@@ -29,6 +29,14 @@ export function openApp(app){
     document.body.appendChild(appWindow);
     appWindow.isMaximized = false;
 
+    // Set default dimensions before saving properties
+    appWindow.style.width = "400px";
+    appWindow.style.height = "480px";
+    appWindow.style.top = "50px";
+    appWindow.style.left = "50px";
+
+    setWindowSavedProperties(appWindow);
+
     // Resize handle (bottom-right corner)
     const resizeHandle = document.createElement("div");
     resizeHandle.classList.add("resizeHandle");
@@ -147,24 +155,33 @@ function minimizeWindow(appWindow, selectedTbIcon){
 function maximizeWindow(appWindow){
     if(appWindow.isMaximized == false){
         // Save current position/size before maximizing
-        appWindow.savedTop = appWindow.style.top;
-        appWindow.savedLeft = appWindow.style.left;
-        appWindow.savedHeight = appWindow.style.height;
-        appWindow.savedWidth = appWindow.style.width;
+        setWindowSavedProperties(appWindow);
 
         appWindow.style.width = "100vw";
-        appWindow.style.height = "100vh";
+        appWindow.style.height = "calc(100vh - var(--taskbar-height))";
         appWindow.style.top = "0";
         appWindow.style.left = "0";
         appWindow.isMaximized = true;
+
+        document.querySelector(".resizeHandle").style.display = "none";
     }
     else{
-        appWindow.style.top = appWindow.savedTop;
-        appWindow.style.left = appWindow.savedLeft;
-        appWindow.style.height = appWindow.savedHeight;
-        appWindow.style.width = appWindow.savedWidth;
+        setWindowProperties(appWindow);
         appWindow.isMaximized = false;
+        document.querySelector(".resizeHandle").style.display = "block";
     }
+}
+function setWindowSavedProperties(appWindow){
+    appWindow.savedTop = appWindow.style.top;
+    appWindow.savedLeft = appWindow.style.left;
+    appWindow.savedHeight = appWindow.style.height;
+    appWindow.savedWidth = appWindow.style.width;
+}
+function setWindowProperties(appWindow){
+    appWindow.style.top = appWindow.savedTop;
+    appWindow.style.left = appWindow.savedLeft;
+    appWindow.style.height = appWindow.savedHeight;
+    appWindow.style.width = appWindow.savedWidth;
 }
 function showWindow(appWindow, selectedTbIcon){
     // Show the window
@@ -221,11 +238,27 @@ function draggableWindow(windowEl, handleEl){
 
         if(windowEl.isMaximized){
             windowEl.isMaximized = false;
+
+            // Get the saved dimensions
+            const savedWidth = parseInt(windowEl.savedWidth) || 800;
+
             windowEl.style.width = windowEl.savedWidth;
             windowEl.style.height = windowEl.savedHeight;
-            // Reset offsets after unmaximizing so window follows cursor from this point
-            offsetX = 0;
-            offsetY = 0;
+
+            // Position the window so the cursor is in the top-middle of the title bar
+            // This mimics Windows behavior
+            let currentX, currentY;
+            if(e.touches && e.touches[0]){
+                currentX = e.touches[0].clientX;
+                currentY = e.touches[0].clientY;
+            } else {
+                currentX = e.clientX;
+                currentY = e.clientY;
+            }
+
+            // Set offset so cursor is at horizontal center and near top
+            offsetX = savedWidth / 2;
+            offsetY = 20; // Approximate title bar center height
         }
 
         let top;
@@ -263,6 +296,10 @@ function draggableWindow(windowEl, handleEl){
         shield = null;
 
         document.body.style.userSelect = "";
+
+        if(getComputedStyle(windowEl).top == "0px"){
+            maximizeWindow(windowEl);
+        }
     }
 
     document.addEventListener("mouseup", (e) => {

@@ -139,6 +139,9 @@ img {
     z-index: 998;
     background-color: transparent;
 }
+.fullscreened {
+    height: calc(100vh - 3.5rem);
+}
 .titleBar {
     background-color: var(--titlebar-bg);
     height: var(--titlebar-height);

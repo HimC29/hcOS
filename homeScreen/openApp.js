@@ -65,11 +65,19 @@ export function openApp(app){
 
     // App icon
     if(app.icon){
-        const iconImg = document.createElement("img");
-        iconImg.src = app.icon;
-        iconImg.alt = `${app.name} icon`;
-        iconImg.classList.add("titleIcon");
-        titleContainer.appendChild(iconImg);
+        if(app.icon.startsWith("./") || app.icon.startsWith("../")){
+            const iconImg = document.createElement("img");
+            iconImg.src = app.icon;
+            iconImg.alt = `${app.name} icon`;
+            iconImg.classList.add("titleIcon");
+            titleContainer.appendChild(iconImg);
+        }
+        else{
+            const iconEmoji = document.createElement("div");
+            iconEmoji.textContent = app.icon;
+            iconEmoji.classList.add("titleIcon");
+            titleContainer.appendChild(iconEmoji);
+        }
     }
 
     // App title text

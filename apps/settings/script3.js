@@ -1,13 +1,19 @@
 import { setUser, getUser, setTheme } from "../../settings.js";
+import { idbFuncs } from "../../idbFuncs.js";
 
 const userInfo = document.getElementById("userInfo");
 const userInput = document.getElementById("userInput");
 const userError = document.getElementById("userError");
 const lightMode = document.getElementById("lightMode");
 const darkMode = document.getElementById("darkMode");
+const wallpaperFileInput = document.getElementById("wallpaperFileID");
 let userName = getUser();
 userInfo.textContent = `User: ${userName}`;
 userInput.value = userName;
+
+await idbFuncs.openDB("myOSDB", 2, [
+    { name: "wallpaper", keyPath: "id" }
+]);
 
 userInput.addEventListener("change", () => {
     const user = userInput.value;
@@ -40,6 +46,15 @@ lightMode.addEventListener("click", () => {
 darkMode.addEventListener("click", () => {
     reqLoad();
     setTheme("dark");
+});
+
+wallpaperFileInput.addEventListener("change", async () => {
+    const file = wallpaperFileInput.files[0];
+    if (!file) return;
+
+    const savedData = { id: "wallpaper", data: file };
+    await idbFuncs.set("wallpaper", { id: "wallpaper", data: file });
+    window.parent.postMessage({ type: "wallpaperUpdate", detail: savedData }, "*");
 });
 
 function reqLoad(){

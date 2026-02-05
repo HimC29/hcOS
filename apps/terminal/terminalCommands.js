@@ -2,7 +2,7 @@ const terminalCommands =
 {
     echo: (args) => {return args.join(" ")},
     help: "help - Shows available commands\naboutOS - Shows current OS",
-    aboutOS: "hc!OS Beta1"
+    aboutOS: "hc!OS Beta2"
 };
 
 export function getTerminalStdout(unformattedCommand){

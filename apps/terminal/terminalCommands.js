@@ -1,7 +1,7 @@
 const terminalCommands = 
 {
     echo: (args) => {return args.join(" ")},
-    help: "help - Shows available commands\naboutOS - Shows current OS",
+    help: "echo args - Returns the args typed\nhelp - Shows available commands\naboutOS - Shows current OS",
     aboutOS: "hc!OS Beta2"
 };
 
